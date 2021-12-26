@@ -6,14 +6,15 @@ scene.background = new THREE.Color('skyblue');
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(
-    35, 
-    container.clientWidth / container.clientHeight, // 
-    0.1,
-    1000
+    35, // FOV
+    container.clientWidth / container.clientHeight, // ASPECT
+    0.1, // near
+    1000 // far
 );
 
 camera.position.set(0, 0, 15);
-
+camera.zoom = 2 // El zoom no funciona hasta actualizar la proyección, por ello:
+camera.updateProjectionMatrix();
 
 
 // MESH
@@ -43,8 +44,8 @@ renderer.setPixelRatio(window.devicePixelRatio);
 
 
 
-// Vamos a remover la caja! con scene.remove
-setTimeout(() => { scene.remove(box_mesh) }, 2000)
+// // Vamos a remover la caja! con scene.remove
+// setTimeout(() => { scene.remove(box_mesh) }, 2000)
 
 
 // renderizamos en un bucle para que rote la malla y ejecutamos la función por primera vez
