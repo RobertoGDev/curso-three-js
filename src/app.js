@@ -5,17 +5,29 @@ scene.background = new THREE.Color('skyblue');
 
 
 // CAMERA
-const camera = new THREE.PerspectiveCamera(
+/* const camera = new THREE.PerspectiveCamera(
     35, // FOV
     container.clientWidth / container.clientHeight, // ASPECT
     0.1, // near
     1000 // far
-);
+); */
+
+const div = 200;
+
+const camera = new THREE.OrthographicCamera(
+    container.clientWidth / div,
+    container.clientWidth / -div,
+    container.clientHeight / div,
+    container.clientHeight / -div,
+    .1,
+    1000
+)
+
 
 camera.position.set(0, 0, 15);
-camera.zoom = 2 // El zoom no funciona hasta actualizar la proyección, por ello:
+/* camera.zoom = 2 // El zoom no funciona hasta actualizar la proyección, por ello: 
 camera.updateProjectionMatrix();
-
+*/
 
 // MESH
 const geometry = new THREE.BoxBufferGeometry(2,2,2) // Cambiamos a BoxGeometry por BoxBufferGeometry que es mas eficiente
