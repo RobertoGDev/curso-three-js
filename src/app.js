@@ -24,19 +24,32 @@ camera.position.set(0, 0, 15);
 
 
 
-// MESH (Cilindro)
-const geometry = new THREE.CylinderBufferGeometry(1, 1, 3, 8) // Cambiamos a CylinderBufferGeometry y si rellenamos los datos necesarios
+// GEOMETRÍAS
+const geometry = new THREE.BoxBufferGeometry(2,2,2) // Cambiamos a CylinderBufferGeometry y si rellenamos los datos necesarios
 
+
+// TEXTURAS
+const textureLoader = new THREE.TextureLoader();
+// Como es muy pesado tener rutas a texturas escritas a mano contínuamente, las seteamos con:
+textureLoader.setPath('./src/assets/textures/');
+const baseColor = textureLoader.load('base_color.jpg');
+const roughness = textureLoader.load('metallic_roughness.png');
+const normalMap = textureLoader.load('normal_map.png');
+
+
+// MATERIALES
 const material = new THREE.MeshBasicMaterial({
-    color: 'teal',
-    //wireframe: true
+    // color: new THREE.Color('teal').convertSRGBToLinear(),
+    //wireframe: true,
+    map: baseColor
 })
 material.opacity = .3;
 
-
-
 const material_standar = new THREE.MeshStandardMaterial({
-    color: 'coral'
+    // color: new THREE.Color('coral').convertSRGBToLinear(),
+    map: baseColor,
+    roughnessMap: roughness,
+    normalMap: normalMap
 })
 
 // cilindro 1
@@ -58,29 +71,12 @@ scene.add(mesh2);
 
 // const ambien_light = new THREE.AmbientLight(0xfffffff, 1);
 // scene.add(ambien_light);
-const hemisphereLight = new THREE.HemisphereLight(0xfffffff, 0x080820, 1);
+const hemisphereLight = new THREE.HemisphereLight(0xfffffbb, 0x080820, 1.5)
 scene.add(hemisphereLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(.8, 2, 4);
 scene.add(directionalLight);
-
-
-
-
-
-// HELPERS (son utilidades que permiten operaciones sin complicarte)
-// Ver los ejes
-const helperAxes = new THREE.AxesHelper(40)
-scene.add(helperAxes);
-
-// Ver las luces direccionales
-const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
-scene.add(directionalLightHelper);
-
-// Ver las luces hemisféricas
-const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight);
-scene.add(hemisphereLightHelper);
 
 
 
@@ -96,7 +92,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 //renderizar las luces de forma correcta
-renderer.physicallyCorrectLights = true
+renderer.physicallyCorrectLights = true;
+renderer.outputEncoding = THREE.sRGBEncoding;
 
 // renderizamos en un bucle para que rote la malla y ejecutamos la función por primera vez
 const loop = () => {
