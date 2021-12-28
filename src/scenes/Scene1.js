@@ -4,6 +4,7 @@ import Cube from "../objects/Cube.js";
 class Scene1 extends THREE.Scene {
   constructor() {
     super();
+    this.background = new THREE.Color("skyblue").convertSRGBToLinear();
     this.create();
   }
 
@@ -23,7 +24,8 @@ class Scene1 extends THREE.Scene {
     }
     
     update() {
-        
+      this.cube.rotateX(0.01);
+      this.cube.rotateY(-0.01);
     }
 }
 
